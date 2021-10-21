@@ -20,9 +20,20 @@ const squareFactory = () => {
   return {setState, getState, sqDiv}
 };
 
-const playerFactory = () => {
-    let score = 0;
-    return {score};
+const playerFactory = (playerTeam) => {
+  let score = 0;
+  const getScore = () => score;
+  const incScore = () => {
+    score++;
+  }
+
+  const team = playerTeam;
+
+  const makeMove = (square) => {
+    square.setState(team);
+  }
+
+  return {team, getScore, incScore, makeMove};
 }
 
 const gameBoard = (() => {
@@ -44,10 +55,9 @@ const gameBoard = (() => {
     }
   }
 
-
   return {squares};
 })();
 
-const player1 = playerFactory();
-const player2 = playerFactory();
+const player1 = playerFactory('X');
+const player2 = playerFactory('O');
 
