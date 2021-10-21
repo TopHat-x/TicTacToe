@@ -6,6 +6,8 @@ const squareFactory = (index) => {
   let sqDiv = document.createElement('div');
   sqDiv.classList.add('square');
   sqDiv.setAttribute("square-ID", index)
+
+  // When you click on the div, it makes a move based on which player is active and the ID of the square clicked on.
   sqDiv.addEventListener('click', e => gameController.getActivePlayer().makeMove(e.target.getAttribute("square-ID")));
 
   const setState = (newState) => {
@@ -78,7 +80,13 @@ const gameController = (() => {
     }
   }
 
-  return{getActivePlayer, swapActivePlayer};
+  const resetGame = () => {
+    for (id = 0; id <= 8; id++){
+      gameBoard.squares[id].setState('BLANK');
+    }
+  }
+
+  return{getActivePlayer, swapActivePlayer, resetGame};
 })();
 
 
