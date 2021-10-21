@@ -3,23 +3,22 @@ const body = document.querySelector("body");
 
 const squareFactory = () => {
   let state = 'BLANK';
-  let div = document.createElement('div');
+  let sqDiv = document.createElement('div');
+  sqDiv.classList.add('square');
 
   const setState = (newState) => {
     state = newState;
-    div.textContent = newState;
+    sqDiv.textContent = newState;
 
     if(newState === 'BLANK'){
-      div.textContent = '';
+      sqDiv.textContent = '';
     }
   }
 
   const getState = () => state;
 
-  return {setState, getState, div};
+  return {setState, getState, sqDiv}
 };
-
-let square = squareFactory();
 
 const playerFactory = () => {
     let score = 0;
@@ -27,14 +26,26 @@ const playerFactory = () => {
 }
 
 const gameBoard = (() => {
-    let squares = [];
+  const board = document.createElement('div');
+  board.classList.add('board');
+  body.appendChild(board);
+  let squares = [];
+  let squareInd = 0;
 
-    for (i = 0; i <= 8; i++){
-        squares[i] = squareFactory();
-        body.appendChild(squares[i].div);
+  for (column = 1; column <= 3; column++){
+    let div = document.createElement('div');
+    div.classList.add('column');
+    board.appendChild(div);
+
+    for (row = 1; row <= 3; row++){
+      squares.push(squareFactory());
+      div.appendChild(squares[squareInd].sqDiv);
+      squareInd++;
     }
+  }
 
-    return {squares};
+
+  return {squares};
 })();
 
 const player1 = playerFactory();
