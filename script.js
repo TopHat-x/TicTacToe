@@ -1,10 +1,12 @@
 const body = document.querySelector("body");
 
 
-const squareFactory = () => {
+const squareFactory = (index) => {
   let state = 'BLANK';
   let sqDiv = document.createElement('div');
   sqDiv.classList.add('square');
+  sqDiv.setAttribute("square-ID", index)
+  sqDiv.addEventListener('click', e => gameController.getActivePlayer().makeMove(e.target.getAttribute("square-ID")));
 
   const setState = (newState) => {
     state = newState;
@@ -29,11 +31,12 @@ const playerFactory = (playerTeam) => {
 
   const team = playerTeam;
 
-  const makeMove = (square) => {
-    square.setState(team);
+  const makeMove = (sqID) => {
+    gameBoard.squares[sqID].setState(team);
+    gameController.swapActivePlayer();
   }
 
-  return {team, getScore, incScore, makeMove};
+  return {getScore, incScore, makeMove};
 }
 
 const gameBoard = (() => {
@@ -49,7 +52,7 @@ const gameBoard = (() => {
     board.appendChild(div);
 
     for (row = 1; row <= 3; row++){
-      squares.push(squareFactory());
+      squares.push(squareFactory(squareInd));
       div.appendChild(squares[squareInd].sqDiv);
       squareInd++;
     }
@@ -58,6 +61,22 @@ const gameBoard = (() => {
   return {squares};
 })();
 
-const player1 = playerFactory('X');
-const player2 = playerFactory('O');
+const playerX = playerFactory('X');
+const playerO = playerFactory('O');
+
+const gameController = (() => {
+  let activePlayer = playerX;
+  const getActivePlayer = () => activePlayer;
+
+  const swapActivePlayer = () => {
+    if (activePlayer === playerX){
+      activePlayer = playerO;
+    } else {
+      activePlayer = playerX;
+    }
+  }
+
+  return{getActivePlayer, swapActivePlayer};
+})();
+
 
