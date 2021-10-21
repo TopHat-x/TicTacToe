@@ -32,8 +32,10 @@ const playerFactory = (playerTeam) => {
   const team = playerTeam;
 
   const makeMove = (sqID) => {
-    gameBoard.squares[sqID].setState(team);
-    gameController.swapActivePlayer();
+    if(gameBoard.squares[sqID].getState() === 'BLANK'){
+      gameBoard.squares[sqID].setState(team);
+      gameController.swapActivePlayer();
+    }
   }
 
   return {getScore, incScore, makeMove};
