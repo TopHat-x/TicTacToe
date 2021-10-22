@@ -1,4 +1,7 @@
 const body = document.querySelector("body");
+const bottomContainer = document.getElementById("bottom-container");
+const resetButton = document.getElementById("reset-btn");
+resetButton.addEventListener('click', () => gameBoard.resetGame());
 
 
 const squareFactory = (index) => {
@@ -90,6 +93,7 @@ const gameBoard = (() => {
   }
 
   const declareWinner = (team) => {
+    bottomContainer.textContent = team + " wins!";
     console.log(team + " wins!");
     gameState = 'INACTIVE';
   }

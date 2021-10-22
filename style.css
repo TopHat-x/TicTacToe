@@ -74,6 +74,7 @@ button{
 }
 
 #bottom-container{
+    margin: 20px;
     font-size: 80px;
     display: flex;
     justify-content: center;
