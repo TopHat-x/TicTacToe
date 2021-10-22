@@ -68,6 +68,7 @@ const gameBoard = (() => {
   let squareInd = 0;
   let activePlayer = playerX;
   let gameState = 'ACTIVE';
+  let turnCounter = 0;
   
 
   for (column = 1; column <= 3; column++){
@@ -83,6 +84,7 @@ const gameBoard = (() => {
   }
 
   const winCheck = (team) => {
+    turnCounter++;
     if(gameBoard.squares[0].getState() === team && gameBoard.squares[3].getState() === team && gameBoard.squares[6].getState() === team){
       declareWinner();
     } else if(gameBoard.squares[1].getState() === team && gameBoard.squares[4].getState() === team && gameBoard.squares[7].getState() === team){
@@ -99,7 +101,9 @@ const gameBoard = (() => {
       declareWinner();
     } else if(gameBoard.squares[2].getState() === team && gameBoard.squares[4].getState() === team && gameBoard.squares[6].getState() === team){
       declareWinner();
-    } 
+    } else if(turnCounter === 9){
+      bottomContainer.textContent = "Tie Game!";
+    }
   }
 
   const declareWinner = () => {
@@ -124,7 +128,7 @@ const gameBoard = (() => {
     }
 
     bottomContainer.textContent = activePlayer.getName() + " 's Turn!";
-
+    turnCounter = 0;
     gameState = 'ACTIVE';
   }
 
