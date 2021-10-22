@@ -2,7 +2,10 @@ const body = document.querySelector("body");
 const bottomContainer = document.getElementById("bottom-container");
 const resetButton = document.getElementById("reset-btn");
 resetButton.addEventListener('click', () => gameBoard.resetGame());
-
+let player1Name = document.getElementById("player1name");
+let player2Name = document.getElementById("player2name");
+let player1Score = document.getElementById("player1score");
+let player2Score = document.getElementById("player2score");
 
 const squareFactory = (index) => {
   let state = 'BLANK';
@@ -28,6 +31,10 @@ const squareFactory = (index) => {
 };
 
 const playerFactory = (playerTeam) => {
+  let name = "Player " + playerTeam;
+
+  const getName = () => name;
+
   let score = 0;
   const getScore = () => score;
   const incScore = () => {
@@ -38,17 +45,21 @@ const playerFactory = (playerTeam) => {
 
   const makeMove = (sqID) => {
     if(gameBoard.squares[sqID].getState() === 'BLANK' && gameBoard.getGameState() === 'ACTIVE'){
+      bottomContainer.textContent = "";
       gameBoard.squares[sqID].setState(team);
       gameBoard.winCheck(team);
       gameBoard.swapActivePlayer();
     }
   }
 
-  return {getScore, incScore, makeMove};
+  return {getName, getScore, incScore, makeMove};
 }
 
 const playerX = playerFactory('X');
 const playerO = playerFactory('O');
+
+player1Name.textContent = playerX.getName();
+player2Name.textContent = playerO.getName();
 
 const gameBoard = (() => {
   const board = document.getElementById("gameboard");
@@ -72,29 +83,27 @@ const gameBoard = (() => {
   }
 
   const winCheck = (team) => {
-    console.log("winCheck");
     if(gameBoard.squares[0].getState() === team && gameBoard.squares[3].getState() === team && gameBoard.squares[6].getState() === team){
-      declareWinner(team);
+      declareWinner();
     } else if(gameBoard.squares[1].getState() === team && gameBoard.squares[4].getState() === team && gameBoard.squares[7].getState() === team){
-      declareWinner(team);
+      declareWinner();
     } else if(gameBoard.squares[2].getState() === team && gameBoard.squares[5].getState() === team && gameBoard.squares[8].getState() === team){
-      declareWinner(team);
+      declareWinner();
     } else if(gameBoard.squares[0].getState() === team && gameBoard.squares[1].getState() === team && gameBoard.squares[2].getState() === team){
-      declareWinner(team);
+      declareWinner();
     } else if(gameBoard.squares[3].getState() === team && gameBoard.squares[4].getState() === team && gameBoard.squares[5].getState() === team){
-      declareWinner(team);
+      declareWinner();
     } else if(gameBoard.squares[6].getState() === team && gameBoard.squares[7].getState() === team && gameBoard.squares[8].getState() === team){
-      declareWinner(team);
+      declareWinner();
     } else if(gameBoard.squares[0].getState() === team && gameBoard.squares[4].getState() === team && gameBoard.squares[8].getState() === team){
-      declareWinner(team);
+      declareWinner();
     } else if(gameBoard.squares[2].getState() === team && gameBoard.squares[4].getState() === team && gameBoard.squares[6].getState() === team){
-      declareWinner(team);
+      declareWinner();
     } 
   }
 
-  const declareWinner = (team) => {
-    bottomContainer.textContent = team + " wins!";
-    console.log(team + " wins!");
+  const declareWinner = () => {
+    bottomContainer.textContent = activePlayer.getName() + " wins!";
     gameState = 'INACTIVE';
   }
 
@@ -113,6 +122,8 @@ const gameBoard = (() => {
     for (id = 0; id <= 8; id++){
       gameBoard.squares[id].setState('BLANK');
     }
+
+    bottomContainer.textContent = activePlayer.getName() + " 's Turn!";
 
     gameState = 'ACTIVE';
   }

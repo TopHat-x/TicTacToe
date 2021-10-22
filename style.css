@@ -45,7 +45,15 @@ body{
     justify-content: center;
 }
 
-.playertext{
+.player-container{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.playertext,
+.playersymbol{
     width: 250px;
     height: 125px;
     line-height: 125px;
@@ -55,6 +63,15 @@ body{
     font-size: 50px;
     border: 1px solid black;
     background-color: snow;
+}
+
+#player1symbol,
+#player2symbol{
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    margin: 20px;
+    border-radius: 10px;
 }
 
 #button-container{
