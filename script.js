@@ -2,10 +2,10 @@ const body = document.querySelector("body");
 const bottomContainer = document.getElementById("bottom-container");
 const resetButton = document.getElementById("reset-btn");
 resetButton.addEventListener('click', () => gameBoard.resetGame());
-let player1Name = document.getElementById("player1name");
-let player2Name = document.getElementById("player2name");
-let player1Score = document.getElementById("player1score");
-let player2Score = document.getElementById("player2score");
+/* let playerXName = document.getElementById("playerXname");
+let playerOName = document.getElementById("playerOname");
+let playerXScore = document.getElementById("playerXscore");
+let playerOScore = document.getElementById("playerOscore"); */
 
 const squareFactory = (index) => {
   let state = 'BLANK';
@@ -31,17 +31,22 @@ const squareFactory = (index) => {
 };
 
 const playerFactory = (playerTeam) => {
+  const team = playerTeam;
   let name = "Player " + playerTeam;
+  let score = 0;
+
+  const playerNameContainer = document.getElementById("player" + playerTeam + "name");
+  const playerScoreContainer = document.getElementById("player" + playerTeam + "score");
+  playerNameContainer.textContent = name;
+  playerScoreContainer.textContent = score;
 
   const getName = () => name;
-
-  let score = 0;
   const getScore = () => score;
+
   const incScore = () => {
     score++;
+    playerScoreContainer.textContent = score;
   }
-
-  const team = playerTeam;
 
   const makeMove = (sqID) => {
     if(gameBoard.squares[sqID].getState() === 'BLANK' && gameBoard.getGameState() === 'ACTIVE'){
@@ -58,8 +63,6 @@ const playerFactory = (playerTeam) => {
 const playerX = playerFactory('X');
 const playerO = playerFactory('O');
 
-player1Name.textContent = playerX.getName();
-player2Name.textContent = playerO.getName();
 
 const gameBoard = (() => {
   const board = document.getElementById("gameboard");
@@ -108,6 +111,7 @@ const gameBoard = (() => {
 
   const declareWinner = () => {
     bottomContainer.textContent = activePlayer.getName() + " wins!";
+    activePlayer.incScore();
     gameState = 'INACTIVE';
   }
 
