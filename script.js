@@ -48,9 +48,8 @@ const playerX = playerFactory('X');
 const playerO = playerFactory('O');
 
 const gameBoard = (() => {
-  const board = document.createElement('div');
+  const board = document.getElementById("gameboard");
   board.classList.add('board');
-  body.appendChild(board);
   let squares = [];
   let squareInd = 0;
   let activePlayer = playerX;
