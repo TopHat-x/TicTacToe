@@ -8,7 +8,7 @@ const squareFactory = (index) => {
   sqDiv.setAttribute("square-ID", index)
 
   // When you click on the div, it makes a move based on which player is active and the ID of the square clicked on.
-  sqDiv.addEventListener('click', e => gameController.getActivePlayer().makeMove(e.target.getAttribute("square-ID")));
+  sqDiv.addEventListener('click', e => gameBoard.getActivePlayer().makeMove(e.target.getAttribute("square-ID")));
 
   const setState = (newState) => {
     state = newState;
@@ -36,12 +36,16 @@ const playerFactory = (playerTeam) => {
   const makeMove = (sqID) => {
     if(gameBoard.squares[sqID].getState() === 'BLANK'){
       gameBoard.squares[sqID].setState(team);
-      gameController.swapActivePlayer();
+      gameBoard.winCheck(team);
+      gameBoard.swapActivePlayer();
     }
   }
 
   return {getScore, incScore, makeMove};
 }
+
+const playerX = playerFactory('X');
+const playerO = playerFactory('O');
 
 const gameBoard = (() => {
   const board = document.createElement('div');
@@ -58,17 +62,36 @@ const gameBoard = (() => {
     for (row = 1; row <= 3; row++){
       squares.push(squareFactory(squareInd));
       div.appendChild(squares[squareInd].sqDiv);
+      squares[squareInd].sqDiv.textContent = squareInd;
       squareInd++;
     }
   }
 
-  return {squares};
-})();
+  const winCheck = (team) => {
+    console.log("winCheck");
+    if(gameBoard.squares[0].getState() === team && gameBoard.squares[3].getState() === team && gameBoard.squares[6].getState() === team){
+      declareWinner(team);
+    } else if(gameBoard.squares[1].getState() === team && gameBoard.squares[4].getState() === team && gameBoard.squares[7].getState() === team){
+      declareWinner(team);
+    } else if(gameBoard.squares[2].getState() === team && gameBoard.squares[5].getState() === team && gameBoard.squares[8].getState() === team){
+      declareWinner(team);
+    } else if(gameBoard.squares[0].getState() === team && gameBoard.squares[1].getState() === team && gameBoard.squares[2].getState() === team){
+      declareWinner(team);
+    } else if(gameBoard.squares[3].getState() === team && gameBoard.squares[4].getState() === team && gameBoard.squares[5].getState() === team){
+      declareWinner(team);
+    } else if(gameBoard.squares[6].getState() === team && gameBoard.squares[7].getState() === team && gameBoard.squares[8].getState() === team){
+      declareWinner(team);
+    } else if(gameBoard.squares[0].getState() === team && gameBoard.squares[4].getState() === team && gameBoard.squares[8].getState() === team){
+      declareWinner(team);
+    } else if(gameBoard.squares[2].getState() === team && gameBoard.squares[4].getState() === team && gameBoard.squares[6].getState() === team){
+      declareWinner(team);
+    } 
+  }
 
-const playerX = playerFactory('X');
-const playerO = playerFactory('O');
+  const declareWinner = (team) => {
+    console.log(team + " wins!");
+  }
 
-const gameController = (() => {
   let activePlayer = playerX;
   const getActivePlayer = () => activePlayer;
 
@@ -86,7 +109,8 @@ const gameController = (() => {
     }
   }
 
-  return{getActivePlayer, swapActivePlayer, resetGame};
+  return{squares, winCheck, getActivePlayer, swapActivePlayer, resetGame};
 })();
+
 
 
