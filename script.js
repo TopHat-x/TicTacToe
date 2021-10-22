@@ -1,11 +1,14 @@
 const body = document.querySelector("body");
 const bottomContainer = document.getElementById("bottom-container");
 const resetButton = document.getElementById("reset-btn");
+const changeNamesButton = document.getElementById("names-btn");
+
 resetButton.addEventListener('click', () => gameBoard.resetGame());
-/* let playerXName = document.getElementById("playerXname");
-let playerOName = document.getElementById("playerOname");
-let playerXScore = document.getElementById("playerXscore");
-let playerOScore = document.getElementById("playerOscore"); */
+changeNamesButton.addEventListener('click', () => {
+  playerX.setName(prompt("What should " + playerX.getName() + "'s new name be?"));
+  playerO.setName(prompt("What should " + playerO.getName() + "'s new name be?"));
+});
+
 
 const squareFactory = (index) => {
   let state = 'BLANK';
@@ -43,6 +46,13 @@ const playerFactory = (playerTeam) => {
   const getName = () => name;
   const getScore = () => score;
 
+  const setName = (newName) => {
+    if(newName.length <= 11){
+      name = newName;
+      playerNameContainer.textContent = newName;
+    }
+  }
+
   const incScore = () => {
     score++;
     playerScoreContainer.textContent = score;
@@ -57,7 +67,7 @@ const playerFactory = (playerTeam) => {
     }
   }
 
-  return {getName, getScore, incScore, makeMove};
+  return {getName, setName, getScore, incScore, makeMove};
 }
 
 const playerX = playerFactory('X');
